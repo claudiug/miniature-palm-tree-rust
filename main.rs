@@ -8,6 +8,17 @@ impl Rectangle {
     fn area(&self) -> u32 {
         self.width * self.height
     }
+
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+
+    fn square(size: u32) -> Self {
+        Self {
+            width: size,
+            height: size,
+        }
+    }
 }
 
 fn main() {
@@ -22,4 +33,9 @@ fn main() {
         rect1.area()
     );
     dbg!(&rect1);
+
+    println!("magic {}", rect1.can_hold(&rect1));
+    let x = Rectangle::square(34);
+    dbg!(&x);
+
 }
