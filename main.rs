@@ -1,41 +1,24 @@
-#[derive(Debug)]
-struct Rectangle {
-    width: u32,
-    height: u32,
-}
-
-impl Rectangle {
-    fn area(&self) -> u32 {
-        self.width * self.height
-    }
-
-    fn can_hold(&self, other: &Rectangle) -> bool {
-        self.width > other.width && self.height > other.height
-    }
-
-    fn square(size: u32) -> Self {
-        Self {
-            width: size,
-            height: size,
-        }
-    }
-}
+use std::collections::HashMap;
+use walkdir::WalkDir;
 
 fn main() {
-    let scale = 2;
-    let rect1 = Rectangle {
-        width: dbg!(30 * scale),
-        height: 50,
-    };
+    let mut filenames = HashMap::new();
 
-    println!(
-        "The area of the rectangle is {} square pixels.",
-        rect1.area()
-    );
-    dbg!(&rect1);
+    for entry in WalkDir::new("/users/Claudiu/Downloads")
+        .into_iter()
+        .filter_map(Result::ok)
+        .filter(|e| !e.file_type().is_dir())
+    {
+        let f_name = String::from(entry.file_name().to_string_lossy());
+        let f_path = String::from(entry.path().to_string_lossy());
+        let counter = filenames.entry(f_name.clone()).or_insert(0);
+        *counter += 1;
 
-    println!("magic {}", rect1.can_hold(&rect1));
-    let x = Rectangle::square(34);
-    dbg!(&x);
+        if *counter >= 2 {
+            println!("{} - {}", f_name, f_path);
+        }
+    }
 
+    println!("{:?}", filenames);
+    println!("{:?}", filenames.len())
 }

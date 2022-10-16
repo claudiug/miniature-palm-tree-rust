@@ -7,6 +7,7 @@ edition = "2021"
 
 [dependencies]
 rand = "0.8.3"
+walkdir = "2.3.2"
 
 [[bin]]
 name = "hello_world"
